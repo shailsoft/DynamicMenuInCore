@@ -1,0 +1,113 @@
+﻿@model SideMenuItemDto
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container-fluid">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">DynamicMenuInCore</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                    @foreach (var item in Model.MenuItem)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="@item.ControllerName" asp-action="@item.ActionName">@item.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+
+
+<style>
+    html, body {
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* define a fixed width for the entire menu */
+    .navigation {
+        width: 300px;
+    }
+
+    /* reset our lists to remove bullet points and padding */
+    .mainmenu, .submenu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        /* make ALL links (main and submenu) have padding and background color */
+        .mainmenu a {
+            display: block;
+            background-color: #CCC;
+            text-decoration: none;
+            padding: 10px;
+            color: #000;
+        }
+
+            /* add hover behaviour */
+            .mainmenu a:hover {
+                background-color: #C5C5C5;
+            }
+
+
+        /* when hovering over a .mainmenu item,
+                  display the submenu inside it.
+                  we're changing the submenu's max-height from 0 to 200px;
+                */
+
+        .mainmenu li:hover .submenu {
+            display: block;
+            max-height: 200px;
+        }
+
+        /*
+                  we now overwrite the background-color for .submenu links only.
+                  CSS reads down the page, so code at the bottom will overwrite the code at the top.
+                */
+
+        .submenu a {
+            background-color: #999;
+        }
+
+            /* hover behaviour for links inside .submenu */
+            .submenu a:hover {
+                background-color: #666;
+            }
+
+    /* this is the initial state of all submenus.
+                  we set it to max-height: 0, and hide the overflowed content.
+                */
+    .submenu {
+        overflow: hidden;
+        max-height: 0;
+        -webkit-transition: all 0.5s ease-out;
+    }
+</style>
+<nav class="navigation">
+    <ul class="mainmenu">
+        @foreach (var item in Model.MenuItem)
+        {
+            <li>
+                <a href="">@item.Name</a>
+                <ul class="submenu">
+                    @foreach (var item1 in Model.SubMenuItemList)
+                    {
+                        <li><a href="">@item1.SName</a></li>
+
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</nav>
